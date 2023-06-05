@@ -115,11 +115,11 @@ timer_hud()
     self endon("disconnect");
 
 	timer_hud = newClientHudElem(self);
-	timer_hud.alignx = "right";
+	timer_hud.alignx = "left";
 	timer_hud.aligny = "top";
-	timer_hud.horzalign = "user_right";
+	timer_hud.horzalign = "user_left";
 	timer_hud.vertalign = "user_top";
-	timer_hud.x -= 5;
+	timer_hud.x -= -2;
 	timer_hud.y += 2;
 	timer_hud.fontscale = 1.4;
 	timer_hud.alpha = 0;
