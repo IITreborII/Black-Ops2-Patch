@@ -3,11 +3,9 @@
 #include maps/mp/_utility;
 #include maps/mp/zombies/_zm_stats;
 #include maps/mp/zombies/_zm_weapons;
-
-/*
-credits: TTS4Life, ... (This is a patch that uses multiple patches from different people, if i figure out who wrote certain line of codes
-i will mention them)
-*/
+#include maps/mp/gametypes_zm/_hud_util;
+#include maps/mp/_utility;
+#include maps/mp/zombies/_zm_magicbox;
 
 init()
 {
@@ -44,10 +42,12 @@ onPlayerConnect()
 	while(true)
 	{
 		level waittill("connecting", player);
+
 		player thread onPlayerSpawned();
 		player thread GivePermaPerks();
 		player thread GiveBank();
         player thread GiveCharacter();
+		player thread GiveFridge();
     }
 }
 
@@ -56,6 +56,7 @@ onPlayerSpawned()
     level endon( "game_ended" );
 	self endon( "disconnect" );
 
+	self thread timer_hud();
 	self.initialspawn = true;
 
 	for( ; ; )
@@ -91,10 +92,44 @@ GiveBank()
 	self.account_value = 250000;
 }
 
-GiveCharacter() //lets you spawn with misty gloves
+GiveFridge()
+{
+	flag_wait("initial_blackscreen_passed");
+
+	self clear_stored_weapondata();
+	self setdstat( "PlayerStatsByMap", "zm_transit", "weaponLocker", "name", "an94_upgraded_zm+mms" );
+}
+
+GiveCharacter()
 {	
 	if (level.force_team_characters != 1)
 	{
 		self setviewmodel( "c_zom_farmgirl_viewhands" );
+		self setdstat( "PlayerStatsByMap", "zm_transit", "weaponLocker", "clip", 50 );
+	    self setdstat( "PlayerStatsByMap", "zm_transit", "weaponLocker", "stock", 600 );
 	}
+}
+
+timer_hud()
+{
+    self endon("disconnect");
+
+	timer_hud = newClientHudElem(self);
+	timer_hud.alignx = "right";
+	timer_hud.aligny = "top";
+	timer_hud.horzalign = "user_right";
+	timer_hud.vertalign = "user_top";
+	timer_hud.x -= 5;
+	timer_hud.y += 2;
+	timer_hud.fontscale = 1.4;
+	timer_hud.alpha = 0;
+	timer_hud.color = ( 1, 1, 1 );
+	timer_hud.hidewheninmenu = 0;
+	timer_hud.hidden = 0;
+	timer_hud.label = &"";
+
+	flag_wait( "initial_blackscreen_passed" );
+	
+	timer_hud.alpha = 1;
+	timer_hud setTimerUp(0);
 }
