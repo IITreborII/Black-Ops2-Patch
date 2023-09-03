@@ -77,7 +77,7 @@ onPlayerSpawned()
 GivePermaPerks()  
 {
 	flag_wait("initial_blackscreen_passed");
-	permaperks = strTok("pers_revivenoperk,pers_insta_kill,pers_jugg,pers_sniper_counter,pers_flopper_counter,pers_perk_lose_counter,pers_box_weapon_counter,pers_multikill_headshots", ",");
+	permaperks = strTok("pers_boarding, pers_revivenoperk, pers_multikill_headshots, pers_cash_back_bought, pers_cash_back_prone, pers_insta_kill, pers_jugg, pers_carpenter, pers_flopper_counter, pers_perk_lose_counter, pers_pistol_points_counter, pers_double_points_counter, pers_sniper_counter, pers_box_weapon_counter, pers_nube_counter", ",");
 	for (i = 0; i < permaperks.size; i++)
 	{
 		self increment_client_stat(permaperks[i], 0);
@@ -108,28 +108,4 @@ GiveCharacter()
 		self setdstat( "PlayerStatsByMap", "zm_transit", "weaponLocker", "clip", 50 );
 	    self setdstat( "PlayerStatsByMap", "zm_transit", "weaponLocker", "stock", 600 );
 	}
-}
-
-timer_hud()
-{
-    self endon("disconnect");
-
-	timer_hud = newClientHudElem(self);
-	timer_hud.alignx = "left";
-	timer_hud.aligny = "top";
-	timer_hud.horzalign = "user_left";
-	timer_hud.vertalign = "user_top";
-	timer_hud.x -= -2;
-	timer_hud.y += 2;
-	timer_hud.fontscale = 1.4;
-	timer_hud.alpha = 0;
-	timer_hud.color = ( 1, 1, 1 );
-	timer_hud.hidewheninmenu = 0;
-	timer_hud.hidden = 0;
-	timer_hud.label = &"";
-
-	flag_wait( "initial_blackscreen_passed" );
-	
-	timer_hud.alpha = 1;
-	timer_hud setTimerUp(0);
 }
